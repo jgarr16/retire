@@ -1,0 +1,16 @@
+{
+  "name": "retire",
+  "version": "1.0.0",
+  "description": "Home-grown modules that can be used to create an effective and efficient retirement plan for government employees. ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "high-3",
+    "OPM",
+    "FERS"
+  ],
+  "author": "jgarr16",
+  "license": "ISC"
+}
