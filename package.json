@@ -12,5 +12,8 @@
     "FERS"
   ],
   "author": "jgarr16",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "pdf-parse": "^1.1.1"
+  }
 }
