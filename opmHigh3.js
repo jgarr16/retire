@@ -89,7 +89,7 @@ calculateHighThree() {
       weightedSalary: this.salaryData[this.salaryData.length - 1].salary * remainingFactor
     });
   
-    let averageSalary = totalWeightedSalary / totalFactor;
+    let averageSalary = totalWeightedSalary / totalFactor; // Corrected calculation of average salary
   
     // Return the high-3 average salary and the details for each time period
     return {

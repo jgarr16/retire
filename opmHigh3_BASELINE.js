@@ -41,6 +41,7 @@ calculateHighThree() {
   
     let totalWeightedSalary = 0;
     let totalFactor = 0;
+    let timePeriods = [];
     for (let i = 0; i < this.salaryData.length - 1; i++) {
       // Determine the start and end dates of the salary period, ensuring they fall within the three-year period
       let startDate = this.salaryData[i].date < threeYearsAgo ? threeYearsAgo : this.salaryData[i].date;
@@ -56,6 +57,17 @@ calculateHighThree() {
   
       totalWeightedSalary += this.salaryData[i].salary * factor;
       totalFactor += factor;
+  
+      // Add the details for this time period to the array
+      timePeriods.push({
+        startDate: startDate,
+        endDate: endDate,
+        months: monthsInEffect,
+        days: daysInEffect,
+        factor: factor,
+        salary: this.salaryData[i].salary,
+        weightedSalary: this.salaryData[i].salary * factor
+      });
     }
   
     // Handle the last salary entry, which is assumed to be in effect until today
@@ -66,10 +78,25 @@ calculateHighThree() {
     totalWeightedSalary += this.salaryData[this.salaryData.length - 1].salary * remainingFactor;
     totalFactor += remainingFactor;
   
+    // Add the details for the last time period to the array
+    timePeriods.push({
+      startDate: this.salaryData[this.salaryData.length - 1].date,
+      endDate: today,
+      months: remainingMonths,
+      days: remainingDays,
+      opmFactor: remainingFactor,
+      salary: this.salaryData[this.salaryData.length - 1].salary,
+      weightedSalary: this.salaryData[this.salaryData.length - 1].salary * remainingFactor
+    });
+  
     let averageSalary = totalWeightedSalary / totalFactor;
   
-    return averageSalary.toFixed(2); // Limit the output to two decimal places
+    // Return the high-3 average salary and the details for each time period
+    return {
+      highThreeAverage: averageSalary.toFixed(2), // Limit the output to two decimal places
+      timePeriods: timePeriods
+    };
   }
-}
+}  
 
 module.exports = HighThreeCalculator;
