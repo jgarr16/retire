@@ -21,15 +21,14 @@ class HighThreeCalculator {
     }
 
     // Calculate the high-3 average salary
-    calculateHighThree() {
+    calculateHighThree(date = new Date()) {
         if (this.salaryData.length < 2) {
             throw new Error('At least 2 salary entries are required to calculate the high-3 average salary.');
         }
 
-        // Determine today's date and the date 3 years ago
-        let today = new Date();
-        let threeYearsAgo = new Date();
-        threeYearsAgo.setFullYear(today.getFullYear() - 3);
+        // Determine the date 3 years ago from the provided date
+        let threeYearsAgo = new Date(date);
+        threeYearsAgo.setFullYear(threeYearsAgo.getFullYear() - 3);
 
         // Check if we have data that covers at least a three-year period
         let totalDuration = (this.salaryData[this.salaryData.length - 1].date - this.salaryData[0].date) / (24 * 60 * 60 * 1000);
@@ -43,7 +42,7 @@ class HighThreeCalculator {
 
         for (let i = 0; i < this.salaryData.length - 1; i++) {
             let startDate = this.salaryData[i].date < threeYearsAgo ? threeYearsAgo : this.salaryData[i].date;
-            let endDate = this.salaryData[i + 1].date > today ? today : this.salaryData[i + 1].date;
+            let endDate = this.salaryData[i + 1].date > date ? date : this.salaryData[i + 1].date;
 
             let daysInEffect = Math.floor((endDate - startDate) / (24 * 60 * 60 * 1000));
             let monthsInEffect = Math.floor(daysInEffect / 30);
@@ -63,7 +62,7 @@ class HighThreeCalculator {
             }
         }
 
-        let remainingDays = Math.floor((today - this.salaryData[this.salaryData.length - 1].date) / (24 * 60 * 60 * 1000));
+        let remainingDays = Math.floor((date - this.salaryData[this.salaryData.length - 1].date) / (24 * 60 * 60 * 1000));
         let remainingMonths = Math.floor(remainingDays / 30);
         remainingDays = remainingDays % 30;
         let remainingFactor = getFactor(remainingDays, remainingMonths);
@@ -80,20 +79,16 @@ class HighThreeCalculator {
 
         highThreeEntries.reverse();
 
-        // Print the high-3 salary entries to the console
-        // console.log("High-3 Salary Entries:");
-        // for (const entry of highThreeEntries) {
-        //     console.log(`Date: ${entry.date.toISOString().slice(0, 10)}, Salary: ${entry.salary}`);
-        // }
-
         // Format averageSalary as currency (USD)
         const formatter = new Intl.NumberFormat('en-US', {
             style: 'currency',
             currency: 'USD',
         });
 
+        const outputDate = date.toISOString().slice(0, 10);
         return {
-            highThreeAverage: formatter.format(averageSalary),
+            averageSalary: formatter.format(averageSalary),
+            queryDate: outputDate,
         };
     }
 }

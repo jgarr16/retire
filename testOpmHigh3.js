@@ -1,6 +1,8 @@
 const HighThreeCalculator = require('./opmHigh3');
 
-let calculator = new HighThreeCalculator();
+const calculator = new HighThreeCalculator();
+
+// let calculator = new HighThreeCalculator();
 calculator.addSalaryEntry('2023-01-01', 201891);
 calculator.addSalaryEntry('2022-01-02', 194126);
 calculator.addSalaryEntry('2021-01-03', 189947);
@@ -28,5 +30,9 @@ calculator.addSalaryEntry('2005-07-24', 77274);
 calculator.addSalaryEntry('2005-01-09', 74782);
 calculator.addSalaryEntry('2004-07-19', 72108);
 
-let result = calculator.calculateHighThree();
-console.log("High-3 Average Salary:", result.highThreeAverage);
+// let averageSalary = calculator.calculateHighThree();
+// console.log("High-3 Average Salary:", averageSalary);
+
+// Calculate the high-3 average salary for any given date (e.g., '2023-07-21')
+const result = calculator.calculateHighThree(new Date('2023-07-19'));
+console.log(`High-3 Salary on ${result.queryDate}:`, result.averageSalary);
