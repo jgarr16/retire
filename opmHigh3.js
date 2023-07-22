@@ -8,7 +8,7 @@ let json = JSON.parse(fs.readFileSync('opm_360day_factor_chart.json', 'utf8'));
 // Function to get the multiplication factor
 function getFactor(days, months) {
     // No need to subtract 1 from months because the first column is considered as the 0 month
-    return json[days.toString()][months];
+    return json?.[days.toString()]?.[months] ?? 0;
 }
 
 class HighThreeCalculator {
