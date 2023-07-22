@@ -39,7 +39,6 @@ class HighThreeCalculator {
 
         let totalWeightedSalary = 0;
         let totalFactor = 0;
-        let timePeriods = [];
         let highThreeEntries = [];
 
         for (let i = 0; i < this.salaryData.length - 1; i++) {
@@ -55,19 +54,9 @@ class HighThreeCalculator {
             totalWeightedSalary += this.salaryData[i].salary * factor;
             totalFactor += factor;
 
-            timePeriods.push({
-                startDate: startDate,
-                endDate: endDate,
-                months: monthsInEffect,
-                days: daysInEffect,
-                factor: factor,
-                salary: this.salaryData[i].salary,
-                weightedSalary: this.salaryData[i].salary * factor
-            });
-
             if (startDate >= threeYearsAgo) {
                 highThreeEntries.push({
-                    date: this.salaryData[i].date,
+                    date: startDate,
                     salary: this.salaryData[i].salary,
                     weightedSalary: this.salaryData[i].salary * factor
                 });
@@ -81,16 +70,6 @@ class HighThreeCalculator {
         totalWeightedSalary += this.salaryData[this.salaryData.length - 1].salary * remainingFactor;
         totalFactor += remainingFactor;
 
-        timePeriods.push({
-            startDate: this.salaryData[this.salaryData.length - 1].date,
-            endDate: today,
-            months: remainingMonths,
-            days: remainingDays,
-            opmFactor: remainingFactor,
-            salary: this.salaryData[this.salaryData.length - 1].salary,
-            weightedSalary: this.salaryData[this.salaryData.length - 1].salary * remainingFactor
-        });
-
         highThreeEntries.push({
             date: this.salaryData[this.salaryData.length - 1].date,
             salary: this.salaryData[this.salaryData.length - 1].salary,
@@ -102,14 +81,19 @@ class HighThreeCalculator {
         highThreeEntries.reverse();
 
         // Print the high-3 salary entries to the console
-        console.log("High-3 Salary Entries:");
-        for (const entry of highThreeEntries) {
-            console.log(`Date: ${entry.date.toISOString().slice(0, 10)}, Salary: ${entry.salary}`);
-        }
+        // console.log("High-3 Salary Entries:");
+        // for (const entry of highThreeEntries) {
+        //     console.log(`Date: ${entry.date.toISOString().slice(0, 10)}, Salary: ${entry.salary}`);
+        // }
+
+        // Format averageSalary as currency (USD)
+        const formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+        });
 
         return {
-            highThreeAverage: averageSalary.toFixed(2),
-            timePeriods: timePeriods.filter(entry => entry.startDate >= threeYearsAgo)
+            highThreeAverage: formatter.format(averageSalary),
         };
     }
 }

@@ -28,4 +28,5 @@ calculator.addSalaryEntry('2005-07-24', 77274);
 calculator.addSalaryEntry('2005-01-09', 74782);
 calculator.addSalaryEntry('2004-07-19', 72108);
 
-console.log(calculator.calculateHighThree()); 
+let result = calculator.calculateHighThree();
+console.log("High-3 Average Salary:", result.highThreeAverage);
