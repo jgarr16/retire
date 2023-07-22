@@ -32,9 +32,48 @@ class HighThreeCalculator {
 
         // Check if we have data that covers at least a three-year period before the evaluation date
         if (this.salaryData[0].date > threeYearsAgo) {
+            let totalWeightedSalary = 0;
+            let totalFactor = 0;
+
+            for (let i = 0; i < this.salaryData.length - 1; i++) {
+                let startDate = this.salaryData[i].date < threeYearsAgo ? threeYearsAgo : this.salaryData[i].date;
+                let endDate = this.salaryData[i + 1].date > date ? date : this.salaryData[i + 1].date;
+
+                let daysInEffect = Math.floor((endDate - startDate) / (24 * 60 * 60 * 1000));
+                let monthsInEffect = Math.floor(daysInEffect / 30);
+                daysInEffect = daysInEffect % 30;
+
+                let factor = getFactor(daysInEffect, monthsInEffect);
+
+                totalWeightedSalary += this.salaryData[i].salary * factor;
+                totalFactor += factor;
+
+                if (startDate >= threeYearsAgo) {
+                    this.salaryData[i].factor = factor;
+                }
+            }
+
+            let remainingDays = Math.floor((date - this.salaryData[this.salaryData.length - 1].date) / (24 * 60 * 60 * 1000));
+            let remainingMonths = Math.floor(remainingDays / 30);
+            remainingDays = remainingDays % 30;
+            let remainingFactor = getFactor(remainingDays, remainingMonths);
+            totalWeightedSalary += this.salaryData[this.salaryData.length - 1].salary * remainingFactor;
+            totalFactor += remainingFactor;
+
+            let averageSalary = totalWeightedSalary / totalFactor;
+
+            // Format averageSalary as currency (USD)
+            const formatter = new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+            });
+
+            const outputDate = date.toISOString().slice(0, 10);
+
             return {
-                message: `Insufficient salary data. The salary history must cover at least a three-year period preceding the evaluation date.`,
-                queryDate: date.toISOString().slice(0, 10),
+                averageSalary: formatter.format(averageSalary),
+                queryDate: outputDate,
+                message: `Insufficient salary data; the salary history must cover at least a three-year period in order to provide a High-3 Average Salary. (The average salary for the data provided is ${formatter.format(averageSalary)}).`
             };
         }
 
@@ -79,8 +118,6 @@ class HighThreeCalculator {
 
         let averageSalary = totalWeightedSalary / totalFactor;
 
-        highThreeEntries.reverse();
-
         // Format averageSalary as currency (USD)
         const formatter = new Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -88,14 +125,6 @@ class HighThreeCalculator {
         });
 
         const outputDate = date.toISOString().slice(0, 10);
-
-        // Check if there is sufficient salary data for a high-3 calculation
-        if (totalFactor === 0) {
-            return {
-                message: `Insufficient salary data. There is no salary data available for the evaluation date.`,
-                queryDate: outputDate,
-            };
-        }
 
         return {
             averageSalary: formatter.format(averageSalary),
