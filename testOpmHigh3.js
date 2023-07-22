@@ -34,5 +34,19 @@ calculator.addSalaryEntry('2004-07-19', 72108);
 // console.log("High-3 Average Salary:", averageSalary);
 
 // Calculate the high-3 average salary for any given date (e.g., '2023-07-21')
-const result = calculator.calculateHighThree(new Date('2023-07-19'));
-console.log(`High-3 Salary on ${result.queryDate}:`, result.averageSalary);
+// const result = calculator.calculateHighThree(new Date('2023-07-21'));
+// console.log(`High-3 Salary on ${result.queryDate}:`, result.averageSalary);
+
+// Get the evaluation date from the command-line arguments (assuming the date is provided in the format 'YYYY-MM-DD')
+const args = process.argv.slice(2); // Skip the first two arguments (node and script file)
+const evaluationDate = args.length > 0 ? new Date(args[0]) : new Date(); // If no date provided, use the current date
+
+// Calculate the high-3 average salary for the evaluation date
+const result = calculator.calculateHighThree(evaluationDate);
+
+// Check if there's an insufficient data message
+if (result.message) {
+    console.log(result.message);
+} else {
+    console.log(`High-3 Salary on ${result.queryDate}:`, result.averageSalary);
+}

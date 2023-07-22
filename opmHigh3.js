@@ -30,10 +30,12 @@ class HighThreeCalculator {
         let threeYearsAgo = new Date(date);
         threeYearsAgo.setFullYear(threeYearsAgo.getFullYear() - 3);
 
-        // Check if we have data that covers at least a three-year period
-        let totalDuration = (this.salaryData[this.salaryData.length - 1].date - this.salaryData[0].date) / (24 * 60 * 60 * 1000);
-        if (totalDuration < 3 * 360) { // Adjusted for a 360-day year
-            throw new Error('The salary data must cover at least a three-year period to calculate the high-3 average salary.');
+        // Check if we have data that covers at least a three-year period before the evaluation date
+        if (this.salaryData[0].date > threeYearsAgo) {
+            return {
+                message: `Insufficient salary data. The salary history must cover at least a three-year period preceding the evaluation date.`,
+                queryDate: date.toISOString().slice(0, 10),
+            };
         }
 
         let totalWeightedSalary = 0;
@@ -86,6 +88,15 @@ class HighThreeCalculator {
         });
 
         const outputDate = date.toISOString().slice(0, 10);
+
+        // Check if there is sufficient salary data for a high-3 calculation
+        if (totalFactor === 0) {
+            return {
+                message: `Insufficient salary data. There is no salary data available for the evaluation date.`,
+                queryDate: outputDate,
+            };
+        }
+
         return {
             averageSalary: formatter.format(averageSalary),
             queryDate: outputDate,
