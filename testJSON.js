@@ -14,3 +14,4 @@ console.log(getFactor(15, 3)); // Should print the factor for 3 months and 15 da
 console.log(getFactor(0, 1));  // Should print the factor for 1 month and 0 days
 console.log(getFactor(29, 11)); // Should print the factor for 12 months and 29 days
 console.log(getFactor(20, 7)); // 0.638889
+
