@@ -73,7 +73,7 @@ class HighThreeCalculator {
             return {
                 averageSalary: formatter.format(averageSalary),
                 queryDate: outputDate,
-                message: `Insufficient salary data; the salary history must cover at least a three-year period in order to provide a High-3 Average Salary. (The average salary for the data provided is ${formatter.format(averageSalary)}).`
+                message: `Insufficient salary data. (The average salary for the data provided is ${formatter.format(averageSalary)}).`
             };
         }
 
