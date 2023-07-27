@@ -48,5 +48,6 @@ const result = calculator.calculateHighThree(evaluationDate);
 if (result.message) {
     console.log(result.message);
 } else {
-    console.log(`High-3 Salary on ${result.queryDate}:`, result.averageSalary);
+    console.log(result.queryDate,'-',result.averageSalary);
+    // console.log(`High-3 Salary on ${result.queryDate}:`, result.averageSalary);
 }
